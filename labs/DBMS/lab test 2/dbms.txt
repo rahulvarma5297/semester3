@@ -1,0 +1,159 @@
+create table LibGen_S20200010212(id int primary key, type varchar(30), cost int check(cost>0), promoted boolean default TRUE);
+
+INSERT INTO LibGen_S20200010212 (id, type , cost) VALUES (1, 'novel', 1000); 
+INSERT INTO LibGen_S20200010212 (id, type , cost) VALUES (2, 'Dictionary', 1200); 
+INSERT INTO LibGen_S20200010212 (id, type , cost) VALUES (3, 'tinkle', 1500); 
+INSERT INTO LibGen_S20200010212 (id, type , cost) VALUES (4, 'Dictionary', 1900); 
+INSERT INTO LibGen_S20200010212 (id, type , cost) VALUES (5, 'tinkle', 2000);
+INSERT INTO LibGen_S20200010212 (id, type , cost) VALUES (6, 'novel', 2500); 
+INSERT INTO LibGen_S20200010212 (id, type , cost) VALUES (7, 'Dictionary', 2300); 
+INSERT INTO LibGen_S20200010212 (id, type , cost) VALUES (8, 'tinkle', 1300); 
+INSERT INTO LibGen_S20200010212 (id, type , cost) VALUES (9, 'Dictionary', 1200); 
+INSERT INTO LibGen_S20200010212 (id, type , cost) VALUES (10, 'tinkle', 2000);
+
+
+create table Summary(typeOfBook varchar(100), priceMin double default 0, priceMax double default 0);
+ 
+delimiter //
+create trigger onDelSummary
+BEFORE DELETE
+ON Summary FOR EACH ROW
+BEGIN
+declare deleteType varchar(30);
+set deleteType = old.typeOfBOOK;
+update LibGen_S20200010212 set Promoted="False" where type=deleteType;
+END //
+
+
+
+create table LibGen_S20200010212(
+    id int unique not null,
+    type varchar(40),
+    COST INT check (cost>0), 
+    promoted varchar(10) default "true");
+
+
+
+insert into libgen_S20200010212(id , type , cost) values(1,"Novel",1000);
+insert into libgen_S20200010212(id , type , cost) values(2,"Fiction",2000);
+insert into libgen_S20200010212(id , type , cost) values(3,"science",1500);
+insert into libgen_S20200010212(id , type , cost) values(4,"Fiction",800);
+insert into libgen_S20200010212(id , type , cost) values(5,"Fables",1000);
+insert into libgen_S20200010212(id , type , cost) values(6,"Novel",3000);
+insert into libgen_S20200010212(id , type , cost) values(7,"Fiction",1200);
+insert into libgen_S20200010212(id , type , cost) values(8,"tales",1800);
+insert into libgen_S20200010212(id , type , cost) values(9,"Novel",5000);
+insert into libgen_S20200010212(id , type , cost) values(10,"Fiction",500);
+
+select * from libgen_S20200010212;
+
+create table Summary ( type varchar(40) , priceMin int , priceMax int);
+
+insert into summary values("Novel",5000,10000);
+insert into summary values("Fiction",3000,8000);
+insert into summary values("science",100000,20000);
+insert into summary values("tales",100,5000);
+insert into summary values("Fantasy",1100,16000);
+insert into summary values("story",2000,20000);
+insert into summary values("Tales",2000,38000);
+insert into summary values("Adventure",12000,30000);
+insert into summary values("Finance",5000,10000);
+insert into summary values("fiction",5000,10000);
+
+delimiter //
+create trigger trig
+after delete
+on Summary for each row
+begin
+declare del_type varchar(40);
+set del_type = old.type;
+update LibGen_S20200010212 set promoted = "False" where type = del_type;
+end //
+delimiter ;
+
+
+
+
+
+
+===================================
+create table customer(id int ,name varchar(30), age int, mobilenum int, plan varchar(30));
+create table baseplan(code int, connectionfee int, pricepersecond int);
+create table phonecall(id int, date_num date, time varchar(30), callednum int, seconds int);
+create table bill(id int,month int,year int, amount int);
+
+insert into customer values(1,"rahul",18,99083434,"unlimited calls");
+insert into customer values(2,"varma",20,76834055,"unlimited net");
+insert into customer values(3,"sai",34,93803829,"unlimited net");
+insert into customer values(4,"ashok",23,95903950,"unlimited calls");
+insert into customer values(5,"chotu",54,99083434,"unlimited calls");
+
+insert into BASEPLAN values(1,200,2);
+insert into BASEPLAN values(2,500,3);
+insert into BASEPLAN values(3,29,4);
+insert into BASEPLAN values(4,45,6);
+insert into BASEPLAN values(5,34,5);
+
+insert into phonecall values(1,'2021-1-1','12:30', 93487388,43);
+insert into phonecall values(2,'2020-7-1','6:30', 93487388,89);
+insert into phonecall values(3,'2021-8-5','7:30', 93487388,56);
+insert into phonecall values(4,'2021-1-9','2:30', 93487388,78);
+insert into phonecall values(5,'2021-6-1','1:30', 93487388,67);
+
+insert into bill values(1,5,2000,56);
+insert into bill values(2,9,2021,67);
+insert into bill values(3,6,2021,89);
+insert into bill values(4,11,2021,56);
+insert into bill values(5,7,2021,43);
+
+DELIMITER /
+CREATE TRIGGER AFTER_PHONE
+BEFORE INSERT 
+on phonecall for each row
+begin
+
+declare count int;
+
+select count(*) into count from baseplan where id=new.id;
+
+if count >0 then 
+update baseplan set amount = amount+(new.seconds*10);
+else
+insert into baseplan(id,amount) values (new.id,new.seconds);
+end if;
+end /
+
+insert into phonecall values(6,'2021-6-1','2;30', 93485688,56); 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

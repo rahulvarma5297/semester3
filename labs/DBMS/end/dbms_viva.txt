@@ -1,0 +1,3 @@
+first open mingw
+cd Desktop
+$ git clone https://github.com/Ritvik-2002/OOPS-MINI-PROECT.git
